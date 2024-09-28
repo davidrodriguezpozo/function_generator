@@ -61,8 +61,10 @@ Implement a method in Python using the polars package, that takes as argument as
 
 Regardless of the number or arguments, the argument of the function should always be an expanded argument: *args
 
-Return only the function definition (starting with def and ending with the last line of the function definition).
-        """
+Moreover, using the example in "extra", create a test case for the function that asserts the result of the function with the expected result.
+
+Return only the function definition and the test case - wrapped in a function called `test` (starting with def and ending with the last line of the function definition).
+"""
     response = (
         llm.chat.completions.create(
             messages=[

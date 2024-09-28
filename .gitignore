@@ -1,0 +1,4 @@
+# Remove all .pyc files
+
+__pycache__/**.pyc
+

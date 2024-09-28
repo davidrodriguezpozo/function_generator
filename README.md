@@ -15,23 +15,45 @@ print(res)
 Output:
 
 ```python
-
 import polars as pl
 
-def covariance_p(*args: pl.Expr) -> pl.Expr:
+def covariance_p(*args):
+    # Ensure there are exactly two arguments
     if len(args) != 2:
         raise ValueError("COVARIANCE.P function requires exactly two arguments")
 
     array1, array2 = args
 
-    n = pl.sum((array1 * 0 + 1).cast(pl.Float64))
-    avg_array1 = pl.mean(array1)
-    avg_array2 = pl.mean(array2)
+    # Calculate mean of both arrays
+    mean1 = array1.mean()
+    mean2 = array2.mean()
 
-    covariance = ((array1 - avg_array1) * (array2 - avg_array2)).sum() / n
+    # Calculate the covariance using the definition provided in the problem statement
+    covariance = (array1 - mean1) * (array2 - mean2)
+    covariance = covariance.sum() / array1.len()
 
     return covariance
 
+def test():
+    # Create test data, identical to the example used in "extra"
+    df = pl.DataFrame({
+        "Data1": [3, 2, 4, 5, 6],
+        "Data2": [9, 7, 12, 15, 17]
+    })
+
+    # Create expressions for the columns
+    data1_expr = pl.col("Data1")
+    data2_expr = pl.col("Data2")
+
+    # Calculate covariance using the function
+    result_expr = covariance_p(data1_expr, data2_expr)
+
+    # Calculate the result via execution on the dataframe
+    result = df.select(result_expr).item()
+
+    # Assert the result is as expected
+    expected_result = 5.2
+    assert result == expected_result, f"Expected {expected_result}, but got {result}"
 ```
 
 ## Requirements
