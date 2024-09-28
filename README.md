@@ -1,4 +1,4 @@
-# Generate polars methods (for python)[https://pola.rs/], given the URL of a Microsoft Excel method page.
+# Generate [polars methods for python](https://pola.rs/), given the URL of a Microsoft Excel method page.
 
 
 
