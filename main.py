@@ -105,7 +105,7 @@ def run(code: str):
 
 def execute_script(script: str) -> Tuple[str, str]:
     to_run = extract_script(script)
-    print("To run: ")
+    print(" Trying code ".center(80, "-"))
     print(to_run)
     error = ""
     try:
@@ -113,12 +113,18 @@ def execute_script(script: str) -> Tuple[str, str]:
     except Exception as e:
         error += f"An error occurred while running the provided code: {e}"
         error += traceback.format_exc()
-        print("Error: ", error)
+        print(" Error ".center(80, "-"))
+        print(error)
 
     return to_run, error
 
 
 def _generate_method(method_name: str, description: str, extra: str) -> str:
+    system_message = """
+        You are an expert programmer in Python and are tasked to implement methods that replicate the behaviour of Microsoft Excel functions. You are given a Microsoft Excel function and a description of its behaviour, and you need to implement a Python function that replicate this behaviour using the polars package.
+
+        It is crucial that the arguments of the method are polars Expressions, and that the method returns a single Expression, being this the result of the operation.
+    """
     message = f"""
         Given the Microsoft Excel function {method_name}, with description: {description}, and the following extra information: {extra}.
 
@@ -133,6 +139,7 @@ Return only the function definition and the test case - wrapped in a function ca
 Then execute the test function. Bear in mind that the whole code will be run in an `exec` function, so make sure to import the necessary libraries and functions.
 """
     messages = [
+        {"role": "system", "content": system_message},
         {"role": "user", "content": message},
     ]
     tries = 0
